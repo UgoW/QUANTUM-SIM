@@ -1,6 +1,6 @@
 # Bienvenue sur le dépôt du Projet Mécanique Quantique avec Python !
 
-un projet de **simulation et de visualisation de phénomènes de mécanique quantique** développé en Python dans un objectif pédagogique.
+Un projet de **simulation et de visualisation de phénomènes de mécanique quantique** développé en Python dans un objectif pédagogique.
 
 Ce dépôt propose des outils permettant de **rendre la mécanique quantique plus accessible** grâce à la modélisation numérique et à la visualisation interactive d’objets quantiques.
 
@@ -49,6 +49,7 @@ Ce projet vise à proposer une **solution open source**, centralisée et évolut
 - **Matplotlib** – visualisation et animations  
 - **Jupyter Notebook** – démonstrations et cas d’étude  
 - **pytest** – tests et validation du code  
+- **Poetry** – gestion des dépendances et de l’environnement virtuel 
 
 ---
 
@@ -56,33 +57,43 @@ Ce projet vise à proposer une **solution open source**, centralisée et évolut
 
 ### Prérequis
 
-- Python 
-- pip (gestionnaire de packages Python)
+- Python 3.9+  
+- [Poetry](https://python-poetry.org/) installé
 
-### Installation en mode développement
+### Installer le projet avec Poetry
 
-1. **Cloner le dépôt** :
+1. **Cloner le dépôt :**
+  ```bash
+  git clone https://github.com/UgoW/QUANTUM-SIM.git
+  cd QUANTUM-SIM
+  ```
+  
+2. **Installer les dépencances**
+  ```bash
+  poetry install --with dev 
+  ```
+
+Retirer le paramètre --with dev si en production (retire les dépendences de test).
+
+3. **Activer l’environnement virtuel (optionnel) :**
+  ```bash
+  poetry shell
+  ```
+
+4. **Installer le projet en mode développement :**
+  ```bash
+  poetry install -e .
+  ```
+
+### Lancer le projet
    ```bash
-   git clone <URL_DU_REPO>
-   cd quantumsim
+  poetry run python main.py
    ```
 
-2. **Installer le package** (obligatoire) :
-   ```bash
-   pip install -e .
-   ```
-   
-   Cette commande installe le projet en mode développement (`-e`), ce qui permet :
-   - D'utiliser `quantumsim` comme un vrai package Python
-   - De modifier le code et voir les changements immédiatement
-   - D'importer depuis n'importe quel dossier : `from quantumsim.waves import ...`
----
-
-
-## 📚 Documentation
-
-- **Installation** : Voir [`docs/installation.md`]
-- **Architecture** : Voir [`docs/architecture.md`]
+### Lancer les tests avec pytest
+  ```bash
+  poetry run pytest
+  ```
 
 ---
 
@@ -95,14 +106,16 @@ Ce projet vise à proposer une **solution open source**, centralisée et évolut
 3. Documenter votre code
 4. Écrire des tests dans le dossier `tests/`
 
+---
+
+## 📚 Documentation
+
+- **Installation** : Voir [`docs/installation.md`]
+- **Architecture** : Voir [`docs/architecture.md`]
+
+---
 
 ## 📜 Licence
 
 Ce projet est sous licence [MIT](LICENSE). Voir le fichier LICENSE pour plus de détails.
-
-
-
-
-
-
 
