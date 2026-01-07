@@ -55,8 +55,8 @@ Ce projet vise à proposer une **solution open source**, centralisée et évolut
 
 ## 📚 Documentation
 
-- **Installation** : Voir [`docs/installation.md`]
-- **Architecture** : Voir [`docs/architecture.md`]
+- **Installation** : Voir [`docs/installation.md`](docs/installation.md)
+- **Architecture** : Voir [`docs/architecture.md`](docs/architecture.md)
 
 ---
 
