@@ -42,31 +42,6 @@
 3. Documenter votre code
 4. Écrire des tests dans le dossier `tests/`
 
-### Structure d'un module
-
-```python
-"""
-Description du module.
-"""
-
-import numpy as np
-
-class MaClasse:
-    """Description de la classe."""
-    
-    def __init__(self, param):
-        """
-        Initialise l'objet.
-        
-        Parameters
-        ----------
-        param : type
-            Description du paramètre
-        """
-        self.param = param
-```
-
-
 
 ## 📜 Licence
 
