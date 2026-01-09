@@ -5,7 +5,7 @@ Ce document décrit l’architecture du projet **Mécanique Quantique avec Pytho
 ## Structure des dossiers
 
 ```
-quantumsim/
+src/quantumsim/
 ├─ waves/
 ├─ potentials/
 ├─ solver/
