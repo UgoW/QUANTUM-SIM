@@ -7,6 +7,9 @@ requires-python = ">=3.14"
 dependencies = [
 ]
 
+[tool.poetry.scripts]
+quantum-sim = "quantum_sim.__main__:main"
+
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
