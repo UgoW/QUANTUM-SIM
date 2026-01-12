@@ -41,3 +41,14 @@ Retirer le paramètre --with dev si en production (retire les dépendences de te
   ```bash
   poetry run pytest
   ```
+
+## Build le projet
+  ```bash
+  poetry build
+  ```
+La commande aura pour effet de crée un fichier `dist` avec les différents build. (**Attention à ne pas inclure le dossier dans le git**)
+
+Pour tester localement : 
+  ```bash
+  pip install dist/quantum_sim-[...]
+  ```
