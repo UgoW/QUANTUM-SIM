@@ -5,7 +5,10 @@ Ce document explique comment installer et configurer le projet **QuantumSim**.
 ## Prérequis
 
 - Python 3.11 ou supérieur  
-- [Poetry](https://python-poetry.org/) installé
+- [Poetry](https://python-poetry.org/) installé *
+
+## *Installer Poetry
+- pip install poetry
 
 ## Installer le projet avec Poetry
 
