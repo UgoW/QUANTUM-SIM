@@ -1,11 +1,14 @@
 # 🚀 Installation du projet
 
-Ce document explique comment installer et configurer le projet **Mécanique Quantique avec Python**.
+Ce document explique comment installer et configurer le projet **QuantumSim**.
 
 ## Prérequis
 
-- Python 3.9 ou supérieur  
-- [Poetry](https://python-poetry.org/) installé
+- Python 3.11 ou supérieur  
+- [Poetry](https://python-poetry.org/) installé *
+
+## *Installer Poetry
+- pip install poetry
 
 ## Installer le projet avec Poetry
 
@@ -27,11 +30,6 @@ Retirer le paramètre --with dev si en production (retire les dépendences de te
   poetry shell
   ```
 
-4. **Installer le projet en mode développement :**
-  ```bash
-  poetry install -e .
-  ```
-
 ## Lancer le projet
    ```bash
   poetry run python main.py
@@ -42,11 +40,17 @@ Retirer le paramètre --with dev si en production (retire les dépendences de te
   poetry run pytest
   ```
 
+## Lancer la couverture de code
+  ```bash
+  poetry run coverage run -m pytest
+  poetry run coverage report -m
+  ```
+
 ## Build le projet
   ```bash
   poetry build
   ```
-La commande aura pour effet de crée un fichier `dist` avec les différents build. (**Attention à ne pas inclure le dossier dans le git**)
+La commande aura pour effet de créer un fichier `dist` avec les différents build. (**Attention à ne pas inclure le dossier dans le git**)
 
 Pour tester localement : 
   ```bash

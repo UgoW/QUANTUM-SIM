@@ -19,8 +19,8 @@ La CI vérifie automatiquement la qualité et le fonctionnement du projet à cha
 1. **Checkout** : Récupère le code du dépôt.
 2. **Setup Python** : Configure l’interpréteur Python 3.14.
 3. **Installer Poetry** : Installe Poetry pour gérer l’environnement et les dépendances.
-4. **Installer les dépendances** : `poetry install --no-interaction --no-root`.
-5. **Exécuter les tests** : `poetry run pytest`.
+4. **Installer les dépendances** : `poetry install --no-interaction`.
+5. **Exécuter les tests** : `poetry run coverage run -m pytest`.
    - Si un test échoue, la CI échoue automatiquement et le merge est bloqué.
 
 ---

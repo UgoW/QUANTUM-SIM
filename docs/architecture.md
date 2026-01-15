@@ -1,28 +1,36 @@
 # ⚙️ Architecture du projet
 
-Ce document décrit l’architecture du projet **Mécanique Quantique avec Python**.
+Ce document décrit l’architecture du projet **QuantumSim**.
 
 ## Structure des dossiers
 
 ```
-src/quantumsim/
-├─ waves/
-├─ potentials/
-├─ solver/
-├─ utils/
+├─.github/worflows
+├─docs
+├─src/quantumsim/
+├──── errors/
+├──── potentials/
+├──── solver/
+├──── utils/
+├──── validators/
+├──── waves/
 ├─ tests/
-├─ docs/
-├─ pyproject.toml
+├─ .gitignore
+├─ CHANGELOG.md
+├─ LICENSE
 ├─ poetry.lock
-└─ main.py
+├─ pyproject.toml
+└─ README.md
 ```
 
 ## Modules principaux
 
-- **waves/** : Fonctions et classes liées aux ondes quantiques
+- **errors/** : Gestion des erreurs personnalisées
 - **potentials/** : Définition des potentiels
 - **solver/** : Résolution numérique de l’équation de Schrödinger
 - **utils/** : Fonctions utilitaires
+- **validators/** : Validation des entrées utilisateur
+- **waves/** : Fonctions et classes liées aux ondes quantiques
 - **tests/** : Tests unitaires avec pytest
 
 ## Flux général
