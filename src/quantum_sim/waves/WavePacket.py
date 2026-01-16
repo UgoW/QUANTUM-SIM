@@ -1,4 +1,4 @@
-
+import numpy as np
 from collections.abc import Callable
 from quantum_sim.waves.WaveFunction import WaveFunction
 
