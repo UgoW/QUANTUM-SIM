@@ -131,3 +131,20 @@ Le label doit être mis à jour manuellement au bon moment.
 * Des messages clairs et explicites
 * Une communication active pendant les reviews
 
+## 9. Conventions de nommage (variables, classes...)
+### Guide des Conventions de Nommage (PEP 8)
+
+| Élément | Public | Interne / Privé |
+| :--- | :--- | :--- |
+| **Packages** | `lower_with_under` | |
+| **Modules** | `lower_with_under` | `_lower_with_under` |
+| **Classes** | `CapWords` | `_CapWords` |
+| **Exceptions** | `CapWords` | |
+| **Fonctions** | `lower_with_under()` | `_lower_with_under()` |
+| **Constantes** | `CAPS_WITH_UNDER` | `_CAPS_WITH_UNDER` |
+| **Variables (Global/Classe)** | `lower_with_under` | `_lower_with_under` |
+| **Variables d'instance** | `lower_with_under` | `_lower_with_under` |
+| **Méthodes** | `lower_with_under()` | `_lower_with_under()` |
+| **Paramètres** | `lower_with_under` | |
+| **Variables locales** | `lower_with_under` | |
+
