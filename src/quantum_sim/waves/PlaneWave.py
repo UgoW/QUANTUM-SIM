@@ -1,46 +1,54 @@
 import numpy as np
 from quantum_sim.waves import WaveFunction
+from quantum_sim.utils.constants import ELECTRON_MASS, REDUCED_PLANCK_CONSTANT, PI
+from quantum_sim.validators.wave_validators import validate_positive, validate_non_negative, validate_range
 
 class PlaneWave(WaveFunction):
-    """Plane wave implementation: ψ(x,t) = A*exp(i(k(x - x0) - ωt + φ))
-
-    Added parameters:
-    - `position` (`x0`): initial spatial offset of the wave (shifts the phase locally by k*x0).
-    - `phase` (`φ`): global initial phase (relevant for interference and relative phases).
+    """
+    Plane wave implementation: ψ(x,t) = A*exp(i(k(x - x0) - ωt + φ))
     """
     
-    def __init__(self, amplitude: complex, wavenumber: float, frequency: float,
-                 position: float = 0.0, phase: float = 0.0, time: float = 0.0):
+    def __init__(self, amplitude: complex, wavelength: float,
+                 position: float = 0.0, phase: float = 0.0, time: float = 0.0, masse: float = ELECTRON_MASS):
         """
         Initialize plane wave.
         
         Args:
             amplitude: Wave amplitude
-            wavenumber: Wave number k
-            frequency: Angular frequency ω
-            time: Time parameter
+            wavelength: Wavelength λ
+            time: Time parameter t
             position: Initial spatial offset x0
             phase: Initial phase φ
+            masse: Particle mass
         """
         self.amplitude = amplitude
-        self.wavenumber = wavenumber
-        self.frequency = frequency
+        self.wavelength = wavelength
         self.position = position
         self.phase = phase
-        # store position as array for compatibility with base class
+        self.masse = masse
         super().__init__(np.array([position]), time)
     
+    def __setattr__(self, name, value):
+        return super().__setattr__(name, value)
+    
+    def __getattribute__(self, name):
+        return super().__getattribute__(name)
+    
+    def validate_parameters(self) -> None:
+        """Validate parameters of the plane wave."""
+        validate_positive(self.wavelength, "wavelength")
+        validate_non_negative(self.masse, "masse")
+    
+    def wave_number(self) -> float:
+        """Calculate wave number k = 2π/λ."""
+        return 2 * PI / self.wavelength
+
+    def angular_frequency(self) -> float:
+        """Calculate angular frequency ω = ħk²/(2m)."""
+        k = self.wave_number()
+        return (REDUCED_PLANCK_CONSTANT * k**2) / (2 * self.masse)
+        
     def evaluate(self, x: float | np.ndarray) -> np.ndarray:
         """Evaluate plane wave."""
         # TODO: Implement evaluation
-        pass
-    
-    def probability_density(self, x: float | np.ndarray) -> np.ndarray:
-        """Calculate probability density."""
-        # TODO: Implement probability density
-        pass
-    
-    def normalize(self) -> None:
-        """Normalize the wave function."""
-        # TODO: Implement normalization
         pass
