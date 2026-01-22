@@ -28,12 +28,6 @@ class PlaneWave(WaveFunction):
         self.masse = masse
         super().__init__(np.array([position]), time)
     
-    def __setattr__(self, name, value):
-        return super().__setattr__(name, value)
-    
-    def __getattribute__(self, name):
-        return super().__getattribute__(name)
-    
     def validate_parameters(self) -> None:
         """Validate parameters of the plane wave."""
         validate_positive(self.wavelength, "wavelength")

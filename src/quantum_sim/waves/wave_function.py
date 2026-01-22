@@ -15,6 +15,7 @@ class WaveFunction(ABC):
         """
         self.position = position
         self.time = time
+        self.validate_parameters()
     
     @abstractmethod
     def evaluate(self, x: float | np.ndarray) -> np.ndarray:
@@ -27,4 +28,9 @@ class WaveFunction(ABC):
         Returns:
             Complex amplitude(s)
         """
+        pass
+
+    @abstractmethod
+    def validate_parameters(self) -> None:
+        """Validate parameters of the wave function."""
         pass
