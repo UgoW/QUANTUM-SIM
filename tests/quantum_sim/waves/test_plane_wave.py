@@ -446,4 +446,191 @@ def test_dispersion_relation():
     expected_omega = (REDUCED_PLANCK_CONSTANT * k**2) / (2 * masse)
     
     assert np.isclose(omega, expected_omega)
+
+@pytest.mark.unit
+def test_wave_number_and_angular_frequency_consistency():
+    """Test consistency between wave number and angular frequency."""
+    amplitude = 1.0 + 0.0j
+    wavelength = 8.0
+    masse = ELECTRON_MASS
+    wave = PlaneWave(amplitude, wavelength, masse=masse)
     
+    k = wave.wave_number()
+    omega = wave.angular_frequency()
+    
+    calculated_omega = (REDUCED_PLANCK_CONSTANT * k**2) / (2 * masse)
+    
+    assert np.isclose(omega, calculated_omega)
+
+
+# ========================
+# Evaluation Method Tests
+# ========================
+
+import numpy as np
+import pytest
+from quantum_sim.waves import PlaneWave
+from quantum_sim.utils.constants import ELECTRON_MASS, REDUCED_PLANCK_CONSTANT, PI
+
+# ========================
+# Evaluation Method Tests
+# ========================
+
+@pytest.mark.unit
+def test_evaluate_single_point():
+    """Test evaluate with a single point returns correct wave value."""
+    amplitude = 1.0
+    wavelength = 2.0 * PI  # k = 1
+    position = 0.0
+    phase = 0.0
+    time = 0.0
+    
+    wave = PlaneWave(amplitude, wavelength, position, phase, time)
+    
+    # At x=0: ψ(0,0) = 1 * exp(i*0) = 1
+    result = wave.evaluate(0.0)
+    expected = 1.0 + 0.0j
+    
+    assert np.isclose(result, expected, atol=1e-14)
+
+
+@pytest.mark.unit
+def test_evaluate_multiple_points():
+    """Test evaluate with multiple points returns array of correct length."""
+    amplitude = 1.0
+    wavelength = 2.0
+    position = 0.0
+    phase = 0.0
+    time = 0.0
+    
+    wave = PlaneWave(amplitude, wavelength, position, phase, time)
+    
+    x_values = np.array([0.0, 0.5, 1.0, 1.5, 2.0])
+    result = wave.evaluate(x_values)
+    
+    # Verify result is array
+    assert isinstance(result, np.ndarray)
+    assert result.shape == x_values.shape
+    assert len(result) == 5
+
+
+@pytest.mark.unit
+def test_evaluate_preserves_amplitude():
+    """Test that amplitude magnitude is preserved at all positions."""
+    amplitude = 2.0
+    wavelength = 5.0
+    position = 0.0
+    phase = 0.0
+    time = 0.0
+    
+    wave = PlaneWave(amplitude, wavelength, position, phase, time)
+    
+    x_values = np.linspace(0, 10, 100)
+    result = wave.evaluate(x_values)
+    magnitudes = np.abs(result)
+    
+    # All magnitudes should equal |amplitude|
+    expected_magnitude = np.abs(amplitude)
+    assert np.allclose(magnitudes, expected_magnitude, atol=1e-14)
+
+
+@pytest.mark.unit
+def test_evaluate_with_position_offset():
+    """Test that position offset correctly shifts the wave."""
+    amplitude = 1.0
+    wavelength = 2.0 * PI
+    position = 1.0
+    phase = 0.0
+    time = 0.0
+    
+    wave = PlaneWave(amplitude, wavelength, position, phase, time)
+    
+    # At x = position, the spatial term (x - x0) = 0
+    result_at_offset = wave.evaluate(position)
+    expected = amplitude * np.exp(1j * phase)
+    
+    assert np.isclose(result_at_offset, expected, atol=1e-14)
+
+
+@pytest.mark.unit
+def test_evaluate_with_phase_shift():
+    """Test that phase correctly shifts the wave."""
+    amplitude = 1.0
+    wavelength = 2.0 * PI
+    position = 0.0
+    phase = PI / 2  # 90 degrees
+    time = 0.0
+    
+    wave = PlaneWave(amplitude, wavelength, position, phase, time)
+    
+    # At x=0, t=0: ψ(0,0) = exp(i*π/2) = i
+    result = wave.evaluate(0.0)
+    expected = 1.0j
+    
+    assert np.isclose(result, expected, atol=1e-14)
+
+
+@pytest.mark.unit
+def test_evaluate_wavelength_2_five_points():
+    """Test evaluate with wavelength=2.0 on 5 points returns expected values."""
+    amplitude = 1.0
+    wavelength = 2.0
+    position = 0.0
+    phase = 0.0
+    time = 0.0
+    
+    wave = PlaneWave(amplitude, wavelength, position, phase, time)
+    
+    x_values = np.array([0.0, 0.5, 1.0, 1.5, 2.0])
+    result = wave.evaluate(x_values)
+    
+    print("\nResult:", result)
+    print("Real parts:", np.real(result))
+    print("Imaginary parts:", np.imag(result))
+    print("Magnitudes:", np.abs(result))
+    
+    # k = 2π/2 = π
+    # Expected: alternating +1 and -1
+    expected_real = np.array([1.0, -1.0, 1.0, -1.0, 1.0])
+    
+    for i, (res, exp_real) in enumerate(zip(result, expected_real)):
+        assert np.isclose(np.real(res), exp_real, atol=1e-14)
+        assert np.isclose(np.imag(res), 0.0, atol=1e-14)
+
+
+@pytest.mark.unit
+def test_evaluate_periodicity():
+    """Test that wave repeats after one wavelength."""
+    amplitude = 1.0
+    wavelength = 4.0
+    position = 0.0
+    phase = 0.0
+    time = 0.0
+    
+    wave = PlaneWave(amplitude, wavelength, position, phase, time)
+    
+    x1 = 0.0
+    x2 = wavelength  # One full wavelength
+    
+    result1 = wave.evaluate(x1)
+    result2 = wave.evaluate(x2)
+    
+    # After one wavelength, phase should be 2π (same point)
+    assert np.isclose(result1, result2, atol=1e-14)
+
+
+@pytest.mark.unit
+def test_evaluate_complex_amplitude():
+    """Test evaluate with complex amplitude."""
+    amplitude = 1.0 + 1.0j
+    wavelength = 2.0 * PI
+    position = 0.0
+    phase = 0.0
+    time = 0.0
+    
+    wave = PlaneWave(amplitude, wavelength, position, phase, time)
+    
+    result = wave.evaluate(0.0)
+    expected = (1.0 + 1.0j) * np.exp(0.0j)
+    
+    assert np.isclose(result, expected, atol=1e-14)
