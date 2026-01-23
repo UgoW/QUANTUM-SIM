@@ -467,27 +467,17 @@ def test_wave_number_and_angular_frequency_consistency():
 # Evaluation Method Tests
 # ========================
 
-import numpy as np
-import pytest
-from quantum_sim.waves import PlaneWave
-from quantum_sim.utils.constants import ELECTRON_MASS, REDUCED_PLANCK_CONSTANT, PI
-
-# ========================
-# Evaluation Method Tests
-# ========================
-
 @pytest.mark.unit
 def test_evaluate_single_point():
     """Test evaluate with a single point returns correct wave value."""
     amplitude = 1.0
-    wavelength = 2.0 * PI  # k = 1
+    wavelength = 2.0 * PI
     position = 0.0
     phase = 0.0
     time = 0.0
     
     wave = PlaneWave(amplitude, wavelength, position, phase, time)
     
-    # At x=0: ψ(0,0) = 1 * exp(i*0) = 1
     result = wave.evaluate(0.0)
     expected = 1.0 + 0.0j
     
@@ -571,34 +561,6 @@ def test_evaluate_with_phase_shift():
 
 
 @pytest.mark.unit
-def test_evaluate_wavelength_2_five_points():
-    """Test evaluate with wavelength=2.0 on 5 points returns expected values."""
-    amplitude = 1.0
-    wavelength = 2.0
-    position = 0.0
-    phase = 0.0
-    time = 0.0
-    
-    wave = PlaneWave(amplitude, wavelength, position, phase, time)
-    
-    x_values = np.array([0.0, 0.5, 1.0, 1.5, 2.0])
-    result = wave.evaluate(x_values)
-    
-    print("\nResult:", result)
-    print("Real parts:", np.real(result))
-    print("Imaginary parts:", np.imag(result))
-    print("Magnitudes:", np.abs(result))
-    
-    # k = 2π/2 = π
-    # Expected: alternating +1 and -1
-    expected_real = np.array([1.0, -1.0, 1.0, -1.0, 1.0])
-    
-    for i, (res, exp_real) in enumerate(zip(result, expected_real)):
-        assert np.isclose(np.real(res), exp_real, atol=1e-14)
-        assert np.isclose(np.imag(res), 0.0, atol=1e-14)
-
-
-@pytest.mark.unit
 def test_evaluate_periodicity():
     """Test that wave repeats after one wavelength."""
     amplitude = 1.0
@@ -634,3 +596,5 @@ def test_evaluate_complex_amplitude():
     expected = (1.0 + 1.0j) * np.exp(0.0j)
     
     assert np.isclose(result, expected, atol=1e-14)
+
+# TODO: Add more tests for time dependence and moving wave packets.

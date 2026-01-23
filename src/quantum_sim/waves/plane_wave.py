@@ -21,11 +21,11 @@ class PlaneWave(WaveFunction):
             phase: Initial phase φ
             masse: Particle mass
         """
-        self.amplitude = amplitude #  
-        self.wavelength = wavelength # Lambda
-        self.position = position # x0
-        self.phase = phase # Phi
-        self.masse = masse # Mass
+        self.amplitude = amplitude  
+        self.wavelength = wavelength
+        self.position = position
+        self.phase = phase
+        self.masse = masse
         super().__init__(np.array([position]), time)
     
     def validate_parameters(self) -> None:
