@@ -21,7 +21,7 @@ class PlaneWave(WaveFunction):
             phase: Initial phase φ
             masse: Particle mass
         """
-        self.amplitude = amplitude
+        self.amplitude = amplitude  
         self.wavelength = wavelength
         self.position = position
         self.phase = phase
@@ -44,5 +44,4 @@ class PlaneWave(WaveFunction):
         
     def evaluate(self, x: float | np.ndarray) -> np.ndarray:
         """Evaluate plane wave."""
-        # TODO: Implement evaluation
-        pass
+        return self.amplitude * np.exp(1j * (self.wave_number() * (x - self.position) - self.angular_frequency() * self.time + self.phase))
