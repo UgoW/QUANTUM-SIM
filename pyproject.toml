@@ -3,8 +3,8 @@ requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [project]
-name = "quantum-sim"
-version = "0.1.5-dev1"
+name = "quantum-sim-test-library"
+version = "0.1.7-dev1"
 description = "Mon projet de simulation quantique"
 readme = "README.md"
 requires-python = ">=3.11"
