@@ -145,7 +145,7 @@ def test_validate_zero_mass():
 def test_wave_number_calculation(plane_wave):
     """Test that wave number is calculated correctly: k = 2π/λ."""
     expected_k = 2 * PI / plane_wave.wavelength
-    calculated_k = plane_wave.wave_number()
+    calculated_k = plane_wave.wave_number
     
     assert np.isclose(calculated_k, expected_k)
 
@@ -157,7 +157,7 @@ def test_wave_number_relationship():
     wavelength = 10.0
     wave = PlaneWave(amplitude, wavelength)
     
-    k = wave.wave_number()
+    k = wave.wave_number
 
     assert np.isclose(k * wavelength, 2 * PI)
 
@@ -170,7 +170,7 @@ def test_wave_number_different_wavelengths():
     
     for wavelength in wavelengths:
         wave = PlaneWave(amplitude, wavelength)
-        k = wave.wave_number()
+        k = wave.wave_number
         expected_k = 2 * PI / wavelength
         assert np.isclose(k, expected_k)
 
@@ -182,7 +182,7 @@ def test_wave_number_positive():
     wavelength = 5.0
     wave = PlaneWave(amplitude, wavelength)
     
-    k = wave.wave_number()
+    k = wave.wave_number
     assert k > 0
 
 
@@ -193,9 +193,9 @@ def test_wave_number_positive():
 @pytest.mark.unit
 def test_angular_frequency_calculation(plane_wave):
     """Test that angular frequency is calculated correctly: ω = ħk²/(2m)."""
-    k = plane_wave.wave_number()
+    k = plane_wave.wave_number
     expected_omega = (REDUCED_PLANCK_CONSTANT * k**2) / (2 * plane_wave.masse)
-    calculated_omega = plane_wave.angular_frequency()
+    calculated_omega = plane_wave.angular_frequency
     
     assert np.isclose(calculated_omega, expected_omega)
 
@@ -207,8 +207,8 @@ def test_angular_frequency_depends_on_wavelength():
     wave1 = PlaneWave(amplitude, wavelength=5.0)
     wave2 = PlaneWave(amplitude, wavelength=10.0)
     
-    omega1 = wave1.angular_frequency()
-    omega2 = wave2.angular_frequency()
+    omega1 = wave1.angular_frequency
+    omega2 = wave2.angular_frequency
     
     assert not np.isclose(omega1, omega2)
 
@@ -222,8 +222,8 @@ def test_angular_frequency_depends_on_mass():
     wave1 = PlaneWave(amplitude, wavelength, masse=ELECTRON_MASS)
     wave2 = PlaneWave(amplitude, wavelength, masse=2 * ELECTRON_MASS)
     
-    omega1 = wave1.angular_frequency()
-    omega2 = wave2.angular_frequency()
+    omega1 = wave1.angular_frequency
+    omega2 = wave2.angular_frequency
     
     assert np.isclose(omega2, omega1 / 2)
 
@@ -235,11 +235,11 @@ def test_angular_frequency_proportional_to_k_squared():
     wave1 = PlaneWave(amplitude, wavelength=10.0)
     wave2 = PlaneWave(amplitude, wavelength=5.0)
     
-    k1 = wave1.wave_number()
-    k2 = wave2.wave_number()
+    k1 = wave1.wave_number
+    k2 = wave2.wave_number
     
-    omega1 = wave1.angular_frequency()
-    omega2 = wave2.angular_frequency()
+    omega1 = wave1.angular_frequency
+    omega2 = wave2.angular_frequency
     
     expected_ratio = (k2**2) / (k1**2)
     actual_ratio = omega2 / omega1
@@ -254,7 +254,7 @@ def test_angular_frequency_positive():
     wavelength = 5.0
     wave = PlaneWave(amplitude, wavelength)
     
-    omega = wave.angular_frequency()
+    omega = wave.angular_frequency
     assert omega > 0
 
 
@@ -356,7 +356,7 @@ def test_plane_wave_with_very_small_wavelength():
     wave = PlaneWave(amplitude, wavelength)
     
     assert np.isclose(wave.wavelength, wavelength)
-    k = wave.wave_number()
+    k = wave.wave_number
     assert k > 0
 
 
@@ -368,7 +368,7 @@ def test_plane_wave_with_very_large_wavelength():
     wave = PlaneWave(amplitude, wavelength)
     
     assert np.isclose(wave.wavelength, wavelength)
-    k = wave.wave_number()
+    k = wave.wave_number
     assert k > 0
 
 
@@ -426,8 +426,8 @@ def test_wave_number_inversely_proportional_to_wavelength():
     wave1 = PlaneWave(amplitude, wavelength=5.0)
     wave2 = PlaneWave(amplitude, wavelength=10.0)
     
-    k1 = wave1.wave_number()
-    k2 = wave2.wave_number()
+    k1 = wave1.wave_number
+    k2 = wave2.wave_number
     
     assert np.isclose(k1 / k2, 2.0)
 
@@ -440,8 +440,8 @@ def test_dispersion_relation():
     masse = ELECTRON_MASS
     wave = PlaneWave(amplitude, wavelength, masse=masse)
     
-    k = wave.wave_number()
-    omega = wave.angular_frequency()
+    k = wave.wave_number
+    omega = wave.angular_frequency
     
     expected_omega = (REDUCED_PLANCK_CONSTANT * k**2) / (2 * masse)
     
@@ -455,8 +455,8 @@ def test_wave_number_and_angular_frequency_consistency():
     masse = ELECTRON_MASS
     wave = PlaneWave(amplitude, wavelength, masse=masse)
     
-    k = wave.wave_number()
-    omega = wave.angular_frequency()
+    k = wave.wave_number
+    omega = wave.angular_frequency
     
     calculated_omega = (REDUCED_PLANCK_CONSTANT * k**2) / (2 * masse)
     
