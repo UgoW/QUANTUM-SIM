@@ -43,7 +43,28 @@ class PlaneWave(WaveFunction):
         """Calculate angular frequency ω = ħk²/(2m)."""
         k = self.wave_number
         return (REDUCED_PLANCK_CONSTANT * k**2) / (2 * self.masse)
-        
+    
+    @property
+    def momentum(self) -> float:
+        """Calculate momentum p = ħk."""
+        return REDUCED_PLANCK_CONSTANT * self.wave_number
+    
+    @property
+    def energy(self) -> float:
+        """Calculate energy E = p²/(2m)."""
+        p = self.momentum
+        return p**2 / (2 * self.masse)
+
+    @property
+    def phase_velocity(self) -> float:
+        """Calculate phase velocity v_p = ω/k."""
+        return self.angular_frequency / self.wave_number
+    
+    @property
+    def period(self) -> float:
+        """Calculate period T = 2π/ω."""
+        return 2 * PI / self.angular_frequency
+
     def evaluate(self, x: float | np.ndarray) -> np.ndarray:
         """Evaluate plane wave."""
         return self.amplitude * np.exp(1j * (self.wave_number * (x - self.position) - self.angular_frequency * self.time + self.phase))
