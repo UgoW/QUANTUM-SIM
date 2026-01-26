@@ -20,7 +20,7 @@ class PlaneWave(WaveFunction):
             position: Initial spatial offset x0
             phase: Initial phase φ
             masse: Particle mass
-        """
+        """ 
         self.amplitude = amplitude  
         self.wavelength = wavelength
         self.position = position
