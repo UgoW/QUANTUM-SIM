@@ -20,7 +20,7 @@ class PlaneWave(WaveFunction):
             position: Initial spatial offset x0
             phase: Initial phase φ
             masse: Particle mass
-        """
+        """ 
         self.amplitude = amplitude  
         self.wavelength = wavelength
         self.position = position
@@ -33,15 +33,17 @@ class PlaneWave(WaveFunction):
         validate_positive(self.wavelength, "wavelength")
         validate_non_negative(self.masse, "masse")
     
+    @property
     def wave_number(self) -> float:
         """Calculate wave number k = 2π/λ."""
         return 2 * PI / self.wavelength
 
+    @property
     def angular_frequency(self) -> float:
         """Calculate angular frequency ω = ħk²/(2m)."""
-        k = self.wave_number()
+        k = self.wave_number
         return (REDUCED_PLANCK_CONSTANT * k**2) / (2 * self.masse)
         
     def evaluate(self, x: float | np.ndarray) -> np.ndarray:
         """Evaluate plane wave."""
-        return self.amplitude * np.exp(1j * (self.wave_number() * (x - self.position) - self.angular_frequency() * self.time + self.phase))
+        return self.amplitude * np.exp(1j * (self.wave_number * (x - self.position) - self.angular_frequency * self.time + self.phase))
