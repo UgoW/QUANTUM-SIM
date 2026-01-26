@@ -25,6 +25,12 @@ jobs:
       - name: Install Poetry
         run: python -m pip install --upgrade poetry
 
+      - name: Install dependencies
+        run: poetry install --no-interaction
+
+      - name: Run tests
+        run: poetry run coverage run -m pytest
+
       - name: Get project version
         id: project_version
         run: |
@@ -39,7 +45,7 @@ jobs:
       - name: Check tag matches project version
         run: |
           if [ "${{ steps.project_version.outputs.VERSION }}" != "${{ steps.tag_version.outputs.VERSION }}" ]; then
-            echo "❌ Tag version does not match pyproject.toml version"
+            echo "Tag version does not match pyproject.toml version"
             echo "Tag:     ${{ steps.tag_version.outputs.VERSION }}"
             echo "Project: ${{ steps.project_version.outputs.VERSION }}"
             exit 1
@@ -48,8 +54,14 @@ jobs:
       - name: Build package
         run: poetry build
 
-      - name: Publish to TestPyPI
+      - name: Publish to TestPyPI # TODO : MODIFY before Develop -> Main
         run: |
           poetry config repositories.testpypi https://test.pypi.org/legacy/
           poetry config pypi-token.testpypi ${{ secrets.POETRY_PYPI_TOKEN_TESTPYPI }}
           poetry publish -r testpypi
+
+#- name: Publish to PyPI
+#  env:
+#    POETRY_PYPI_TOKEN_PYPI: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}
+#  run: |
+#    poetry publish --build
