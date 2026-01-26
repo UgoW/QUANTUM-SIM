@@ -33,10 +33,12 @@ class PlaneWave(WaveFunction):
         validate_positive(self.wavelength, "wavelength")
         validate_non_negative(self.masse, "masse")
     
+    @property
     def wave_number(self) -> float:
         """Calculate wave number k = 2π/λ."""
         return 2 * PI / self.wavelength
 
+    @property
     def angular_frequency(self) -> float:
         """Calculate angular frequency ω = ħk²/(2m)."""
         k = self.wave_number()
