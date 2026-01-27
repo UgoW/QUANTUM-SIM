@@ -3,3 +3,4 @@ from .errors import *
 from .validators import *
 from .waves import *
 from .utils import *
+from .potentials import *
