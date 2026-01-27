@@ -1,3 +1,8 @@
+"""Plane wave implementation for quantum simulations.
+
+This module provides the PlaneWave class, implementing a plane wave solution
+to the Schrödinger equation: ψ(x,t) = A*exp(i(k(x - x0) - ωt + φ))
+"""
 import numpy as np
 from quantum_sim.waves import WaveFunction
 from quantum_sim.utils.constants import ELECTRON_MASS, REDUCED_PLANCK_CONSTANT, PI
