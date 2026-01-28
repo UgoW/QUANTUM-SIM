@@ -148,3 +148,8 @@ Le label doit être mis à jour manuellement au bon moment.
 | **Paramètres** | `lower_with_under` | |
 | **Variables locales** | `lower_with_under` | |
 
+## 10. Commandes utiles
+### Générer une documentation au format HTML de l'API
+```bash
+sh ./scripts/generate_docs.sh
+```

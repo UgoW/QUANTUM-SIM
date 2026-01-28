@@ -1,9 +1,9 @@
 import pytest
 import numpy as np
-from quantum_sim.potentials.Potential import Potential
-from quantum_sim.potentials.FreePotential import FreePotential
-from quantum_sim.potentials.StepPotential import StepPotential
-from quantum_sim.potentials.InfiniteWell import InfiniteWell
+from quantum_sim.potentials.potential import Potential
+from quantum_sim.potentials.free_potential import FreePotential
+from quantum_sim.potentials.step_potential import StepPotential
+from quantum_sim.potentials.infinite_well import InfiniteWell
 
 
 class TestPotentialCreation:

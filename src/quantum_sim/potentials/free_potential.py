@@ -1,5 +1,5 @@
 import numpy as np
-from quantum_sim.potentials.Potential import Potential
+from quantum_sim.potentials.potential import Potential
 from typing import Dict, Any
 
 
