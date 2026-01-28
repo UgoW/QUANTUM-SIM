@@ -52,11 +52,11 @@ jobs:
           fi
 
       - name: Build package
-        run: poetry build --yes
+        run: poetry build -n
 
       - name: Publish to PyPI
         env:
           POETRY_PYPI_TOKEN_PYPI: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}
         run: |
-          poetry publish --build --no-interaction
+          poetry publish --build -n
 
