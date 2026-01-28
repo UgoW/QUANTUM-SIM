@@ -54,14 +54,10 @@ jobs:
       - name: Build package
         run: poetry build
 
-      - name: Publish to TestPyPI # TODO : MODIFY before Develop -> Main
+      - name: Publish to PyPI
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}
         run: |
-          poetry config repositories.testpypi https://test.pypi.org/legacy/
-          poetry config pypi-token.testpypi ${{ secrets.POETRY_PYPI_TOKEN_TESTPYPI }}
-          poetry publish -r testpypi
+          poetry publish --build
 
-#- name: Publish to PyPI
-#  env:
-#    POETRY_PYPI_TOKEN_PYPI: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}
-#  run: |
-#    poetry publish --build
+

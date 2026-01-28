@@ -4,8 +4,8 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "quantum-sim-test-library"
-version = "0.1.8-dev1" #TODO : Modifier avant develop -> main
-description = "Projet de Simulation Quantique." #TODO : Modifier avant develop -> main
+version = "1.0.0" 
+description = "Un projet de simulation et de visualisation de phénomènes de mécanique quantique développé en Python dans un objectif pédagogique." 
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = ["numpy ==2.4.1", "coverage (>=7.13.1,<8.0.0)"]
