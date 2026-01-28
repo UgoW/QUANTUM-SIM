@@ -68,3 +68,11 @@ class PlaneWave(WaveFunction):
     def evaluate(self, x: float | np.ndarray) -> np.ndarray:
         """Evaluate plane wave."""
         return self.amplitude * np.exp(1j * (self.wave_number * (x - self.position) - self.angular_frequency * self.time + self.phase))
+    
+    def evaluate_at_time_zero(self, x: float | np.ndarray) -> np.ndarray:
+        """Evaluate plane wave at time t = 0."""
+        return self.amplitude * np.exp(1j * (self.wave_number * (x - self.position) + self.phase))
+    
+    def evaluate_at_position_zero(self, t: float | np.ndarray) -> np.ndarray:
+        """Evaluate plane wave at position x = 0."""
+        return self.amplitude * np.exp(1j * (-self.wave_number * self.position - self.angular_frequency * t + self.phase))
