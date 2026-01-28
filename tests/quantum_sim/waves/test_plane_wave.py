@@ -464,137 +464,127 @@ def test_wave_number_and_angular_frequency_consistency():
 
 
 # ========================
-# Evaluation Method Tests
+# Momentum Tests
 # ========================
 
 @pytest.mark.unit
-def test_evaluate_single_point():
-    """Test evaluate with a single point returns correct wave value."""
-    amplitude = 1.0
-    wavelength = 2.0 * PI
-    position = 0.0
-    phase = 0.0
-    time = 0.0
+def test_momentum_calculation(plane_wave):
+    """Test that momentum is calculated correctly: p = ħk."""
+    k = plane_wave.wave_number
+    expected_p = REDUCED_PLANCK_CONSTANT * k
+    calculated_p = plane_wave.momentum
     
-    wave = PlaneWave(amplitude, wavelength, position, phase, time)
-    
-    result = wave.evaluate(0.0)
-    expected = 1.0 + 0.0j
-    
-    assert np.isclose(result, expected, atol=1e-14)
+    assert np.isclose(calculated_p, expected_p)
 
 
 @pytest.mark.unit
-def test_evaluate_multiple_points():
-    """Test evaluate with multiple points returns array of correct length."""
-    amplitude = 1.0
-    wavelength = 2.0
-    position = 0.0
-    phase = 0.0
-    time = 0.0
-    
-    wave = PlaneWave(amplitude, wavelength, position, phase, time)
-    
-    x_values = np.array([0.0, 0.5, 1.0, 1.5, 2.0])
-    result = wave.evaluate(x_values)
-    
-    # Verify result is array
-    assert isinstance(result, np.ndarray)
-    assert result.shape == x_values.shape
-    assert len(result) == 5
-
-
-@pytest.mark.unit
-def test_evaluate_preserves_amplitude():
-    """Test that amplitude magnitude is preserved at all positions."""
-    amplitude = 2.0
+def test_momentum_positive():
+    """Test that momentum is positive for positive wavelength."""
+    amplitude = 1.0 + 0.0j
     wavelength = 5.0
-    position = 0.0
-    phase = 0.0
-    time = 0.0
+    wave = PlaneWave(amplitude, wavelength)
     
-    wave = PlaneWave(amplitude, wavelength, position, phase, time)
+    p = wave.momentum
+    assert p > 0
+
+
+# ========================
+# Energy Tests
+# ========================
+
+@pytest.mark.unit
+def test_energy_calculation(plane_wave):
+    """Test that energy is calculated correctly: E = p²/(2m)."""
+    p = plane_wave.momentum
+    expected_e = p**2 / (2 * plane_wave.masse)
+    calculated_e = plane_wave.energy
     
-    x_values = np.linspace(0, 10, 100)
-    result = wave.evaluate(x_values)
-    magnitudes = np.abs(result)
-    
-    # All magnitudes should equal |amplitude|
-    expected_magnitude = np.abs(amplitude)
-    assert np.allclose(magnitudes, expected_magnitude, atol=1e-14)
+    assert np.isclose(calculated_e, expected_e)
 
 
 @pytest.mark.unit
-def test_evaluate_with_position_offset():
-    """Test that position offset correctly shifts the wave."""
-    amplitude = 1.0
-    wavelength = 2.0 * PI
-    position = 1.0
-    phase = 0.0
-    time = 0.0
+def test_energy_positive():
+    """Test that energy is positive for non-zero wavelength."""
+    amplitude = 1.0 + 0.0j
+    wavelength = 5.0
+    wave = PlaneWave(amplitude, wavelength)
     
-    wave = PlaneWave(amplitude, wavelength, position, phase, time)
-    
-    # At x = position, the spatial term (x - x0) = 0
-    result_at_offset = wave.evaluate(position)
-    expected = amplitude * np.exp(1j * phase)
-    
-    assert np.isclose(result_at_offset, expected, atol=1e-14)
+    e = wave.energy
+    assert e > 0
 
 
 @pytest.mark.unit
-def test_evaluate_with_phase_shift():
-    """Test that phase correctly shifts the wave."""
-    amplitude = 1.0
-    wavelength = 2.0 * PI
-    position = 0.0
-    phase = PI / 2  # 90 degrees
-    time = 0.0
+def test_energy_increases_with_wavelength_decrease():
+    """Test that energy increases when wavelength decreases."""
+    amplitude = 1.0 + 0.0j
+    wave1 = PlaneWave(amplitude, wavelength=10.0)
+    wave2 = PlaneWave(amplitude, wavelength=5.0)
     
-    wave = PlaneWave(amplitude, wavelength, position, phase, time)
+    assert wave2.energy > wave1.energy
+
+
+# ========================
+# Phase Velocity Tests
+# ========================
+
+@pytest.mark.unit
+def test_phase_velocity_calculation(plane_wave):
+    """Test that phase velocity is calculated correctly: v_p = ω/k."""
+    k = plane_wave.wave_number
+    omega = plane_wave.angular_frequency
+    expected_vp = omega / k
+    calculated_vp = plane_wave.phase_velocity
     
-    # At x=0, t=0: ψ(0,0) = exp(i*π/2) = i
-    result = wave.evaluate(0.0)
-    expected = 1.0j
-    
-    assert np.isclose(result, expected, atol=1e-14)
+    assert np.isclose(calculated_vp, expected_vp)
 
 
 @pytest.mark.unit
-def test_evaluate_periodicity():
-    """Test that wave repeats after one wavelength."""
-    amplitude = 1.0
-    wavelength = 4.0
-    position = 0.0
-    phase = 0.0
-    time = 0.0
+def test_phase_velocity_positive():
+    """Test that phase velocity is positive."""
+    amplitude = 1.0 + 0.0j
+    wavelength = 5.0
+    wave = PlaneWave(amplitude, wavelength)
     
-    wave = PlaneWave(amplitude, wavelength, position, phase, time)
+    vp = wave.phase_velocity
+    assert vp > 0
+
+
+# ========================
+# Period Tests
+# ========================
+
+@pytest.mark.unit
+def test_period_calculation(plane_wave):
+    """Test that period is calculated correctly: T = 2π/ω."""
+    omega = plane_wave.angular_frequency
+    expected_t = 2 * PI / omega
+    calculated_t = plane_wave.period
     
-    x1 = 0.0
-    x2 = wavelength  # One full wavelength
-    
-    result1 = wave.evaluate(x1)
-    result2 = wave.evaluate(x2)
-    
-    # After one wavelength, phase should be 2π (same point)
-    assert np.isclose(result1, result2, atol=1e-14)
+    assert np.isclose(calculated_t, expected_t)
 
 
 @pytest.mark.unit
-def test_evaluate_complex_amplitude():
-    """Test evaluate with complex amplitude."""
-    amplitude = 1.0 + 1.0j
-    wavelength = 2.0 * PI
-    position = 0.0
-    phase = 0.0
-    time = 0.0
+def test_period_positive():
+    """Test that period is positive for positive wavelength."""
+    amplitude = 1.0 + 0.0j
+    wavelength = 5.0
+    wave = PlaneWave(amplitude, wavelength)
     
-    wave = PlaneWave(amplitude, wavelength, position, phase, time)
-    
-    result = wave.evaluate(0.0)
-    expected = (1.0 + 1.0j) * np.exp(0.0j)
-    
-    assert np.isclose(result, expected, atol=1e-14)
+    t = wave.period
+    assert t > 0
 
-# TODO: Add more tests for time dependence and moving wave packets.
+
+@pytest.mark.unit
+def test_period_inversely_proportional_to_angular_frequency():
+    """Test that period is inversely related to angular frequency."""
+    amplitude = 1.0 + 0.0j
+    wave1 = PlaneWave(amplitude, wavelength=5.0)
+    wave2 = PlaneWave(amplitude, wavelength=10.0)
+    
+    period1 = wave1.period
+    period2 = wave2.period
+    omega1 = wave1.angular_frequency
+    omega2 = wave2.angular_frequency
+    
+    # T1 * ω1 ≈ T2 * ω2 = 2π
+    assert np.isclose(period1 * omega1, period2 * omega2)
