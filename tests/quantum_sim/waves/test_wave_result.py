@@ -1,4 +1,4 @@
-# tests/quantum_sim/waves/test_result.py
+# tests/quantum_sim/waves/test_wave_result.py
 from quantum_sim.waves import WaveResult
 import pytest
 from pytest import fixture

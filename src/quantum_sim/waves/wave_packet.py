@@ -1,6 +1,6 @@
 import numpy as np
 from collections.abc import Callable
-from quantum_sim.waves.WaveFunction import WaveFunction
+from quantum_sim.waves.wave_function import WaveFunction
 
 class WavePacket(WaveFunction):
     """Wave packet: superposition of plane waves."""

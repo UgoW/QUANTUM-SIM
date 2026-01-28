@@ -15,6 +15,7 @@ class WaveFunction(ABC):
         """
         self.position = position
         self.time = time
+        self.validate_parameters()
     
     @abstractmethod
     def evaluate(self, x: float | np.ndarray) -> np.ndarray:
@@ -28,21 +29,8 @@ class WaveFunction(ABC):
             Complex amplitude(s)
         """
         pass
-    
+
     @abstractmethod
-    def probability_density(self, x: float | np.ndarray) -> np.ndarray:
-        """
-        Calculate probability density |ψ(x)|².
-        
-        Args:
-            x: Position(s)
-            
-        Returns:
-            Probability density values
-        """
-        pass
-    
-    @abstractmethod
-    def normalize(self) -> None:
-        """Normalize the wave function."""
+    def validate_parameters(self) -> None:
+        """Validate parameters of the wave function."""
         pass
