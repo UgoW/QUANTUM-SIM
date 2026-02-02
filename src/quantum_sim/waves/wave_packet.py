@@ -25,6 +25,7 @@ class WavePacket(WaveFunction):
             raise ValueError("Either momentum_distribution or plane_waves must be provided")
         
         self.position_center = position_center
+        self._norm_factor = 1.0
         super().__init__(np.array([position_center]), time)
     
     def _distribution_from_waves(self) -> Callable:
@@ -73,13 +74,20 @@ class WavePacket(WaveFunction):
         x_fft = np.fft.fftfreq(n_points) * (2 * k_max)
         
         if isinstance(x, float):
-            return np.array([np.interp(x, x_fft, psi_x)])
+            interp = np.interp(x, x_fft, psi_x.real) + 1j * np.interp(x, x_fft, psi_x.imag)
+            return np.array([interp])
         else:
-            return np.array(np.interp(x, x_fft, psi_x))
+            interp_real = np.interp(x, x_fft, psi_x.real)
+            interp_imag = np.interp(x, x_fft, psi_x.imag)
+            return np.array(interp_real + 1j * interp_imag)
         
     
     def evaluate(self, x: float | np.ndarray) -> np.ndarray:
         """Evaluate wave packet."""
+        return self._norm_factor * self._evaluate_raw(x)
+
+    def _evaluate_raw(self, x: float | np.ndarray) -> np.ndarray:
+        """Evaluate wave packet without applying normalization factor."""
         if self.momentum_distribution is not None:
             return self.evaluate_with_momentum_distribution(x)
         else:
@@ -89,7 +97,14 @@ class WavePacket(WaveFunction):
         """Calculate probability density."""
         return np.abs(self.evaluate(x))**2
     
-    def normalize(self) -> None:
+    def normalize(self, x: np.ndarray) -> None:
         """Normalize the wave function."""
-        # TODO: Implement normalization
-        pass
+
+        # evaluate raw (without current normalization)
+        psi = self._evaluate_raw(x)
+        prob_raw = np.abs(psi) ** 2
+        norm_val = np.trapz(prob_raw, x)
+        if norm_val <= 0 or not np.isfinite(norm_val):
+            raise ValueError(f"Invalid norm computed: {norm_val}")
+
+        self._norm_factor = 1.0 / np.sqrt(norm_val)
