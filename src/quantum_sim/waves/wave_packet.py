@@ -5,7 +5,7 @@ from quantum_sim.waves.wave_function import WaveFunction
 class WavePacket(WaveFunction):
     """Wave packet: superposition of plane waves."""
     
-    def __init__(self, momentum_distribution: Callable, position_center: float = 0.0, time: float = 0.0):
+    def __init__(self, momentum_distribution, position_center: float = 0.0, time: float = 0.0):
         """
         Initialize wave packet.
         
