@@ -1,5 +1,6 @@
 import numpy as np
 from quantum_sim.waves.wave_function import WaveFunction
+from quantum_sim.validators.wave_validators import validate_positive, validate_non_negative
 
 class WavePacket(WaveFunction):
     """Wave packet: superposition of plane waves."""
@@ -9,7 +10,7 @@ class WavePacket(WaveFunction):
         Initialize wave packet.
         
         Args:
-            position_center: Center position of the packet
+            plane_waves: Plane wave which form the 
             time: Time parameter
         """
         if plane_waves is not None:
@@ -20,6 +21,10 @@ class WavePacket(WaveFunction):
         self._norm_factor = 1.0
         super().__init__(np.array([]), time)
     
+    def validate_parameters(self) -> None:
+        """Validate parameters of the plane wave."""
+        validate_positive(self._norm_factor, "norm factor")
+
     def momentum_components(self) -> list[tuple[float, complex]]:
         """
         Discrete momentum representation (k, amplitude).
