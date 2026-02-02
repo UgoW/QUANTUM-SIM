@@ -1,1 +1,2 @@
 from .constants import PLANCK_CONSTANT, PI, REDUCED_PLANCK_CONSTANT, ELECTRON_MASS, SPEED_OF_LIGHT
+from .wave_generators import random_waves, waves_from_tuples, waves_harmonics
