@@ -1,12 +1,13 @@
 import numpy as np
 from collections.abc import Callable
 from quantum_sim.waves.wave_packet import WavePacket
+from quantum_sim.waves.plane_wave import PlaneWave
 
 
 class GaussianWavePacket(WavePacket):
     """Gaussian wave packet: superposition of plane waves with gaussian envelope."""
     
-    def __init__(self, plane_waves, k0=None, sigma_k=None, position_center=0.0, time=0.0):
+    def __init__(self, plane_waves: list[PlaneWave], k0=None, sigma_k=None, time=0.0):
         """
         Initialize Gaussian wave packet from plane waves.
         
@@ -23,9 +24,8 @@ class GaussianWavePacket(WavePacket):
         k_values = self._extract_wave_numbers(plane_waves)
         self.k0 = self._compute_k0(k0, k_values)
         self.sigma_k = self._compute_sigma_k(sigma_k, k_values)
-        self.plane_waves = plane_waves
         
-        super().__init__(plane_waves=plane_waves, position_center=position_center, time=time)
+        super().__init__(plane_waves=plane_waves, time=time)
     
     def _extract_wave_numbers(self, plane_waves) -> np.ndarray:
         """Extract wave numbers from list of plane waves.
@@ -51,10 +51,17 @@ class GaussianWavePacket(WavePacket):
             :return: Momentum width
         """
         if sigma_k is not None:
+            if sigma_k <= 0:
+                raise ValueError("sigma_k must be positive")
             return sigma_k
-        return float(np.std(k_values))
+        
+        sigma = float(np.std(k_values))
+        if sigma <= 0:
+            raise ValueError("Cannot infer sigma_k from plane waves (zero spread in k)")
+
+        return sigma
     
-    def evaluate(self, x: float | np.ndarray) -> np.ndarray:
+    def _evaluate_raw(self, x: float | np.ndarray) -> np.ndarray:
         """Evaluate wave packet with gaussian envelope applied to plane waves.
             :param x: position(s) to evaluate the wave packet
             :type x: float | np.ndarray
@@ -78,3 +85,6 @@ class GaussianWavePacket(WavePacket):
             :rtype: complex
         """
         return np.exp(-(k - self.k0)**2 / (2 * self.sigma_k**2))
+
+    def evaluate(self, x: float | np.ndarray) -> np.ndarray:
+        return self._norm_factor * self._evaluate_raw(x)
