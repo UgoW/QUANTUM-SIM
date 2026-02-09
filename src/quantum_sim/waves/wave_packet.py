@@ -1,24 +1,48 @@
 import numpy as np
+from quantum_sim.waves.plane_wave import PlaneWave
 from quantum_sim.waves.wave_function import WaveFunction
 from quantum_sim.validators.wave_validators import validate_positive, validate_non_negative
 
 class WavePacket(WaveFunction):
     """Wave packet: superposition of plane waves."""
-    
-    def __init__(self, plane_waves=None, time: float = 0.0):
+
+    def __init__(self, plane_waves: list[PlaneWave], time: float = 0.0):
         """
-        Initialize wave packet.
-        
+        Initialize a WavePacket instance by vectorizing multiple PlaneWave objects.
+
+        This constructor extracts physical parameters from a list of PlaneWave instances 
+        and stores them as NumPy arrays. This transition from a list of objects to 
+        vectorized arrays is essential for high-performance matrix operations during 
+        wave function evaluation, avoiding slow Python loops.
+
         Args:
-            plane_waves: Plane wave which form the 
-            time: Time parameter
+            plane_waves (list[PlaneWave]): A list of PlaneWave objects that constitute 
+                the wave packet. Each wave carries its own amplitude, wave number (k), 
+                and frequency (omega).
+            time (float): Initial time parameter (t) for the simulation. 
+                Defaults to 0.0.
+
+        Raises:
+            ValueError: If the plane_waves list is empty, as a wave packet 
+                requires at least one constituent wave.
         """
-        if plane_waves is not None:
-            self.plane_waves = plane_waves
-        else:
-            raise ValueError("Either momentum_distribution or plane_waves must be provided")
         
+        if not plane_waves:
+            raise ValueError("plane_waves list cannot be empty")
+            
+        self.plane_waves = plane_waves
         self._norm_factor = 1.0
+        
+        self._amplitudes = np.array([pw.amplitude for pw in plane_waves], dtype=complex)
+        
+        self._k_vectors = np.array([pw.wave_number for pw in plane_waves], dtype=float)
+        
+        self._omegas = np.array([pw.angular_frequency for pw in plane_waves], dtype=float)
+        
+        self._phases = np.array([pw.phase for pw in plane_waves], dtype=float)
+        
+        self._positions = np.array([pw.position for pw in plane_waves], dtype=float)
+
         super().__init__(np.array([]), time)
     
     def validate_parameters(self) -> None:
@@ -36,14 +60,48 @@ class WavePacket(WaveFunction):
         return np.abs(self.evaluate(x))**2
 
     def _evaluate_raw(self, x: float | np.ndarray) -> np.ndarray:
-        """Evaluate sum of plane waves.
-            :param x: position(s) to evaluate the wave packet
-            :type x: float | np.ndarray
         """
-        result = np.zeros_like(x, dtype=complex)
-        for pw in self.plane_waves:
-            result += pw.evaluate(x)
-        return result
+        Evaluate the wave packet using vectorized matrix operations for high performance.
+
+        Instead of iterating through each plane wave in a Python loop, this method 
+        leverages NumPy broadcasting to compute the superposition of all constituent 
+        waves across all input positions simultaneously.
+
+        The computation follows these steps:
+        1. Reshape the input positions 'x' into a column vector (M x 1).
+        2. Reshape the wave parameters (k, omega, phase, etc.) into row vectors (1 x N).
+        3. Create a phase matrix (M x N) where each element (i, j) represents the 
+           phase of the j-th wave at the i-th position.
+        4. Compute the complex exponential for the entire matrix and weight it by amplitudes.
+        5. Sum along the wave axis (axis=1) to obtain the total wave function value.
+
+        Args:
+            x (float | np.ndarray): Spatial position(s) where the wave packet is evaluated.
+
+        Returns:
+            np.ndarray: The complex value(s) of the wave function at position(s) x.
+                        Returns a scalar if the input x was a scalar.
+        """
+
+        x_array = np.atleast_1d(x)
+
+        X = x_array[:, np.newaxis]
+        
+        K = self._k_vectors[np.newaxis, :]
+        W = self._omegas[np.newaxis, :]
+        P = self._phases[np.newaxis, :]
+        X0 = self._positions[np.newaxis, :]
+        A = self._amplitudes[np.newaxis, :]
+        
+        total_phase = K * (X - X0) - (W * self.time) + P
+        
+        waves_matrix = A * np.exp(1j * total_phase)
+        
+        psi_sum = np.sum(waves_matrix, axis=1)
+        
+        if np.ndim(x) == 0:
+            return psi_sum[0]
+        return psi_sum
 
     def evaluate(self, x: float | np.ndarray) -> np.ndarray:
         """Evaluate sum of plane waves with normalisation factor applied
