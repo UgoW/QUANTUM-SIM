@@ -1,5 +1,6 @@
 import numpy as np
 from collections.abc import Callable
+from quantum_sim.utils.constants import ELECTRON_MASS, PI
 from quantum_sim.waves.wave_packet import WavePacket
 from quantum_sim.waves.plane_wave import PlaneWave
 
@@ -7,24 +8,58 @@ from quantum_sim.waves.plane_wave import PlaneWave
 class GaussianWavePacket(WavePacket):
     """Gaussian wave packet: superposition of plane waves with gaussian envelope."""
     
-    def __init__(self, plane_waves: list[PlaneWave], k0=None, sigma_k=None, time=0.0):
+    """
+    Gaussian wave packet: superposition of plane waves with a gaussian envelope.
+    The amplitudes of the underlying plane waves are weighted by a Gaussian distribution
+    in the momentum (k) space.
+    """
+    
+    def __init__(
+        self, 
+        k_center: float, 
+        sigma_k: float, 
+        n_waves: int = 100, 
+        position_center: float = 0.0,
+        time: float = 0.0, 
+        mass: float = ELECTRON_MASS
+    ):
         """
-        Initialize Gaussian wave packet from plane waves.
+        Initialize Gaussian Wave Packet.
         
         Args:
-            plane_waves: List of PlaneWave instances
-            k0: Center momentum wave number (auto-computed if None)
-            sigma_k: Momentum width (auto-computed if None)
-            position_center: Center position of the packet
-            time: Time parameter
+            k_center: Center wave number (k0)
+            sigma_k: Width of the packet in momentum space
+            n_waves: Number of plane waves to use for the superposition
+            position_center: Initial spatial center of the packet (x0)
+            time: Initial time parameter
+            mass: Particle mass
         """
-        if not plane_waves:
-            raise ValueError("plane_waves list cannot be empty")
+        if sigma_k <= 0:
+            raise ValueError("sigma_k must be positive")
+        if n_waves <= 0:
+            raise ValueError("n_waves must be a positive integer")
+
+        self.k0 = k_center
+        self.sigma_k = sigma_k
+
+        k_min = k_center - 4 * sigma_k
+        k_max = k_center + 4 * sigma_k
+        k_values = np.linspace(k_min, k_max, n_waves)
+
+        amplitudes = np.exp(-(k_values - k_center)**2 / (2 * sigma_k**2))
         
-        k_values = self._extract_wave_numbers(plane_waves)
-        self.k0 = self._compute_k0(k0, k_values)
-        self.sigma_k = self._compute_sigma_k(sigma_k, k_values)
-        
+        plane_waves = []
+        for k, amp in zip(k_values, amplitudes):
+            wavelength = 2 * PI / k if k != 0 else 1e15
+            
+            pw = PlaneWave(
+                amplitude=amp, 
+                wavelength=wavelength, 
+                position=position_center, 
+                masse=mass
+            )
+            plane_waves.append(pw)
+            
         super().__init__(plane_waves=plane_waves, time=time)
     
     def _extract_wave_numbers(self, plane_waves) -> np.ndarray:
@@ -61,21 +96,6 @@ class GaussianWavePacket(WavePacket):
 
         return sigma
     
-    def _evaluate_raw(self, x: float | np.ndarray) -> np.ndarray:
-        """Evaluate wave packet with gaussian envelope applied to plane waves.
-            :param x: position(s) to evaluate the wave packet
-            :type x: float | np.ndarray
-            :return: Evaluated wave packet at positions x
-            :rtype: np.ndarray
-        """
-        x = np.asarray(x)
-        result = np.zeros_like(x, dtype=complex)
-        
-        for pw in self.plane_waves:
-            envelope = self._gaussian_envelope(pw.wave_number)
-            result += envelope * pw.evaluate(x)
-        
-        return result
     
     def _gaussian_envelope(self, k: float) -> complex:
         """Compute gaussian envelope for given wave number.
@@ -85,6 +105,3 @@ class GaussianWavePacket(WavePacket):
             :rtype: complex
         """
         return np.exp(-(k - self.k0)**2 / (2 * self.sigma_k**2))
-
-    def evaluate(self, x: float | np.ndarray) -> np.ndarray:
-        return self._norm_factor * self._evaluate_raw(x)
