@@ -115,7 +115,7 @@ class WavePacket(WaveFunction):
 
         psi = self._evaluate_raw(x)
         prob_raw = np.abs(psi) ** 2
-        norm_val = np.trapz(prob_raw, x)
+        norm_val = np.trapezoid(prob_raw, x)
         if norm_val <= 0 or not np.isfinite(norm_val):
             # TODO : Revoir pour utiliser des exceptions personnalisés
             raise ValueError(f"Invalid norm computed: {norm_val}")
