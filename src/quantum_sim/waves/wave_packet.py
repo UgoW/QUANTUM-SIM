@@ -26,22 +26,22 @@ class WavePacket(WaveFunction):
             ValueError: If the plane_waves list is empty, as a wave packet 
                 requires at least one constituent wave.
         """
-        
+
         if not plane_waves:
             raise ValueError("plane_waves list cannot be empty")
             
         self.plane_waves = plane_waves
         self._norm_factor = 1.0
         
-        self._amplitudes = np.array([pw.amplitude for pw in plane_waves], dtype=complex)
+        self._amplitudes = np.array([pw.amplitude for pw in plane_waves], dtype=complex).ravel()
         
-        self._k_vectors = np.array([pw.wave_number for pw in plane_waves], dtype=float)
+        self._k_vectors = np.array([pw.wave_number for pw in plane_waves], dtype=float).ravel()
         
-        self._omegas = np.array([pw.angular_frequency for pw in plane_waves], dtype=float)
+        self._omegas = np.array([pw.angular_frequency for pw in plane_waves], dtype=float).ravel()
         
-        self._phases = np.array([pw.phase for pw in plane_waves], dtype=float)
+        self._phases = np.array([pw.phase for pw in plane_waves], dtype=float).ravel()
         
-        self._positions = np.array([pw.position for pw in plane_waves], dtype=float)
+        self._positions = np.array([pw.position for pw in plane_waves], dtype=float).ravel()
 
         super().__init__(np.array([]), time)
     
