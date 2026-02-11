@@ -3,6 +3,7 @@ from quantum_sim.waves.plane_wave import PlaneWave
 from quantum_sim.waves.wave_function import WaveFunction
 from quantum_sim.validators.wave_validators import validate_positive, validate_non_negative
 
+
 class WavePacket(WaveFunction):
     """Wave packet: superposition of plane waves."""
 
@@ -59,7 +60,7 @@ class WavePacket(WaveFunction):
         """Calculate probability density."""
         return np.abs(self.evaluate(x))**2
 
-    def _evaluate_raw(self, x: float | np.ndarray) -> np.ndarray:
+    def _evaluate_raw(self, x: float | np.ndarray, t: float | None = None) -> np.ndarray:
         """
         Evaluate the wave packet using vectorized matrix operations for high performance.
 
@@ -93,7 +94,10 @@ class WavePacket(WaveFunction):
         X0 = self._positions[np.newaxis, :]
         A = self._amplitudes[np.newaxis, :]
         
-        total_phase = K * (X - X0) - (W * self.time) + P
+        # Changement: rajout d'un parametre t pour evaluer a un instant t
+        time_value = self.time if t is None else t
+        
+        total_phase = K * (X - X0) - (W * time_value) + P
         
         waves_matrix = A * np.exp(1j * total_phase)
         
@@ -103,14 +107,14 @@ class WavePacket(WaveFunction):
             return psi_sum[0]
         return psi_sum
 
-    def evaluate(self, x: float | np.ndarray) -> np.ndarray:
+    def evaluate(self, x: float | np.ndarray, t: float | None = None) -> np.ndarray:
         """Evaluate sum of plane waves with normalisation factor applied
             :param x: position(s) to evaluate the wave packet
             :type x: float | np.ndarray
         """
         self.normalize(x)
-        return self._norm_factor * self._evaluate_raw(x)
-    
+        return self._norm_factor * self._evaluate_raw(x,t)
+        
     def normalize(self, x: float | np.ndarray) -> None:
         """Normalize the wave function."""
 
