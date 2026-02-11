@@ -1,5 +1,4 @@
 import numpy as np
-from collections.abc import Callable
 from quantum_sim.utils.constants import ELECTRON_MASS, PI
 from quantum_sim.waves.wave_packet import WavePacket
 from quantum_sim.waves.plane_wave import PlaneWave

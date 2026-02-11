@@ -29,8 +29,3 @@ class WaveFunction(ABC):
             Complex amplitude(s)
         """
         pass
-
-    @abstractmethod
-    def validate_parameters(self) -> None:
-        """Validate parameters of the wave function."""
-        pass
