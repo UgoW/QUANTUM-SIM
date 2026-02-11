@@ -65,6 +65,19 @@ class PlaneWave(WaveFunction):
         """Calculate period T = 2π/ω."""
         return 2 * PI / self.angular_frequency
 
+    def evaluate_interval(self, start: float, end: float, points: int):
+        """
+        Evaluate the wave on a generated spatial interval.
+        
+        Returns:
+            tuple (x, ψ(x))
+        """
+        validate_range(start, end, "interval")
+        validate_positive(points, "points")
+
+        x = np.linspace(start, end, points)
+        return x, self.evaluate(x)
+
     def evaluate(self, x: float | np.ndarray) -> np.ndarray:
         """Evaluate plane wave."""
         return self.amplitude * np.exp(1j * (self.wave_number * (x - self.position) - self.angular_frequency * self.time + self.phase))
