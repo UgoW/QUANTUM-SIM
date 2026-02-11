@@ -6,7 +6,20 @@ Ce dépôt propose des outils permettant de **rendre la mécanique quantique plu
 
 ---
 
-## Objectifs du projet
+## Table des matières
+
+1. [Objectifs](#objectifs)
+2. [Contexte](#contexte)
+3. [Fonctionnalités](#fonctionnalités)
+4. [Technologies](#technologies)
+5. [Installation](#installation)
+6. [Architecture](#architecture)
+7. [Contribuer](#contribuer)
+8. [Licence](#licence)
+
+---
+
+## Objectifs
 
 - Illustrer les concepts fondamentaux de la mécanique quantique  
 - Implémenter numériquement les équations fondamentales  
@@ -25,7 +38,7 @@ Ce projet vise à proposer une **solution open source**, centralisée et évolut
 
 ---
 
-## Fonctionnalités principales
+## Fonctionnalités
 
 - Modélisation d’ondes planes et de paquets d’ondes  
 - Résolution numérique de l’équation de Schrödinger en 1D  
@@ -42,7 +55,7 @@ Ce projet vise à proposer une **solution open source**, centralisée et évolut
 
 ---
 
-## Technologies utilisées
+## Technologies
 
 - **Python**
 - **NumPy / SciPy** – calcul scientifique et méthodes numériques  
@@ -53,13 +66,39 @@ Ce projet vise à proposer une **solution open source**, centralisée et évolut
 
 ---
 
-## 📚 Documentation
+## Installation
 
-- **Installation** : Voir [`docs/installation.md`](docs/installation.md)
-- **Architecture** : Voir [`docs/architecture.md`](docs/architecture.md)
+Voir le guide complet [`docs/installation.md`](docs/installation.md)
+
+## Architecture
+
+Ce dépôt contient la **bibliothèque Python `quantum-sim-lib`**,  
+qui constitue le cœur du projet.
+
+Elle expose toutes les fonctions de simulation quantique.
+
+Cette bibliothèque est ensuite utilisée de deux manières :
+
+- 🧑‍💻 **Notebooks / IDE Python**  
+  Pour réaliser des simulations et visualisations avec Matplotlib.
+
+- 🌍 **Interface Web**  
+  Une application web dédiée utilise la bibliothèque via WebAssembly :  
+  [`Interface web QUANTUM-SIM`](https://github.com/maximedervaux/FRONT-QUANTUM-SIM)
 
 ---
 
+### Schéma simplifié
+
+```mermaid
+graph LR
+    A[quantum-sim-lib] --> B[Notebooks / IDE Python]
+    A --> C[Interface Web]
+```
+
+pour voir plus de détail [`docs/architecture.md`](docs/architecture.md).
+
+---
 ## 📜 Licence
 
 Ce projet est sous licence [MIT](LICENSE). Voir le fichier LICENSE pour plus de détails.
