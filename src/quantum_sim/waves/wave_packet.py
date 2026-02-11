@@ -114,7 +114,7 @@ class WavePacket(WaveFunction):
         """
         # Changement: rajout d'un parametre t pour evaluer a un instant t
         return self._norm_factor * self._evaluate_raw(x, t=t)
-    
+        
     def normalize(self, x: np.ndarray) -> None:
         """Normalize the wave function."""
 
@@ -126,49 +126,49 @@ class WavePacket(WaveFunction):
             raise ValueError(f"Invalid norm computed: {norm_val}")
 
         self._norm_factor = 1.0 / np.sqrt(norm_val)
-        
+            
 
-@property
-def energy(self) -> float:
-    """
-    Expectation value of energy for the wave packet.
-    
-    Computed as weighted sum of individual plane wave energies.
-    
-    Returns:
-        Energy in Joules
+    @property
+    def energy(self) -> float:
+        """
+        Expectation value of energy for the wave packet.
         
-    Raises:
-        ValueError: if wave packet has no plane_waves
-    """
-    if not self.plane_waves:
-        raise ValueError("Wave packet must contain plane_waves to compute energy")
-    
-    return self.energy_expectation()
+        Computed as weighted sum of individual plane wave energies.
+        
+        Returns:
+            Energy in Joules
+            
+        Raises:
+            ValueError: if wave packet has no plane_waves
+        """
+        if not self.plane_waves:
+            raise ValueError("Wave packet must contain plane_waves to compute energy")
+        
+        return self.energy_expectation()
 
-def energy_expectation(self) -> float:
-    """
-    Compute expectation value ⟨E⟩ of energy for the wave packet.
-    
-    For plane waves: ⟨E⟩ = Σ w_n * E_n
-        where w_n = |A_n|² / Σ|A_m|² (normalized weights)
-        and E_n is the energy of plane wave n
-    
-    Each plane wave contributes proportionally to |amplitude|².
-    
-    Returns:
-        float: Expectation value of energy in Joules
+    def energy_expectation(self) -> float:
+        """
+        Compute expectation value ⟨E⟩ of energy for the wave packet.
         
-    Raises:
-        ValueError: if all amplitudes are zero
-    """
-    amps = np.array([pw.amplitude for pw in self.plane_waves], dtype=complex)
-    weights = np.abs(amps) ** 2
-    
-    if np.sum(weights) <= 0:
-        raise ValueError("All component amplitudes are zero; cannot compute energy")
-    
-    weights = weights / np.sum(weights)
-    energies = np.array([pw.energy for pw in self.plane_waves], dtype=float)
-    
-    return float(np.sum(weights * energies))
+        For plane waves: ⟨E⟩ = Σ w_n * E_n
+            where w_n = |A_n|² / Σ|A_m|² (normalized weights)
+            and E_n is the energy of plane wave n
+        
+        Each plane wave contributes proportionally to |amplitude|².
+        
+        Returns:
+            float: Expectation value of energy in Joules
+            
+        Raises:
+            ValueError: if all amplitudes are zero
+        """
+        amps = np.array([pw.amplitude for pw in self.plane_waves], dtype=complex)
+        weights = np.abs(amps) ** 2
+        
+        if np.sum(weights) <= 0:
+            raise ValueError("All component amplitudes are zero; cannot compute energy")
+        
+        weights = weights / np.sum(weights)
+        energies = np.array([pw.energy for pw in self.plane_waves], dtype=float)
+        
+        return float(np.sum(weights * energies))
