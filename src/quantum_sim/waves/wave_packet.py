@@ -108,9 +108,10 @@ class WavePacket(WaveFunction):
             :param x: position(s) to evaluate the wave packet
             :type x: float | np.ndarray
         """
+        self.normalize(x)
         return self._norm_factor * self._evaluate_raw(x)
     
-    def normalize(self, x: np.ndarray) -> None:
+    def normalize(self, x: float | np.ndarray) -> None:
         """Normalize the wave function."""
 
         psi = self._evaluate_raw(x)
