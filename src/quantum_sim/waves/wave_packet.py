@@ -112,10 +112,10 @@ class WavePacket(WaveFunction):
             :param x: position(s) to evaluate the wave packet
             :type x: float | np.ndarray
         """
-        # Changement: rajout d'un parametre t pour evaluer a un instant t
-        return self._norm_factor * self._evaluate_raw(x, t=t)
+        self.normalize(x)
+        return self._norm_factor * self._evaluate_raw(x,t)
         
-    def normalize(self, x: np.ndarray) -> None:
+    def normalize(self, x: float | np.ndarray) -> None:
         """Normalize the wave function."""
 
         psi = self._evaluate_raw(x)
@@ -126,8 +126,7 @@ class WavePacket(WaveFunction):
             raise ValueError(f"Invalid norm computed: {norm_val}")
 
         self._norm_factor = 1.0 / np.sqrt(norm_val)
-            
-
+        
     @property
     def energy(self) -> float:
         """
