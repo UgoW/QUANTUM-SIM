@@ -34,7 +34,7 @@ graph TD
 
     E --> F[Notebook / IDE]
 
-    A --> G[Compilation WebAssembly]
+    E --> G[Compilation WebAssembly]
 
     G --> H[Interface Web]
 
