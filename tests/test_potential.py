@@ -29,7 +29,9 @@ class TestPotentialCreation:
         pot = StepPotential(x0=x0, V0=V0)
         assert isinstance(pot, Potential)
         assert pot.parameters == {"x0": x0, "V0": V0}
-        expected_str = f"StepPotential: V(x) = 0 for x < {x0}, V(x) = {V0} for x >= {x0}"
+        expected_str = (
+            f"StepPotential: V(x) = 0 for x < {x0}, V(x) = {V0} for x >= {x0}"
+        )
         assert str(pot) == expected_str
 
     def test_step_potential_evaluation(self):
@@ -47,12 +49,16 @@ class TestPotentialCreation:
         pot = InfiniteWell(a=a, b=b, V_wall=V_wall)
         assert isinstance(pot, Potential)
         assert pot.parameters == {"a": a, "b": b, "V_wall": V_wall}
-        expected_str = f"InfiniteWell: V(x) = 0 for {a} < x < {b}, V(x) = {V_wall} otherwise"
+        expected_str = (
+            f"InfiniteWell: V(x) = 0 for {a} < x < {b}, V(x) = {V_wall} otherwise"
+        )
         assert str(pot) == expected_str
 
     def test_infinite_well_creation_invalid_bounds(self):
         """Test InfiniteWell with invalid bounds raises error."""
-        with pytest.raises(ValueError, match="Left boundary 'a' must be less than right boundary 'b'"):
+        with pytest.raises(
+            ValueError, match="Left boundary 'a' must be less than right boundary 'b'"
+        ):
             InfiniteWell(a=1.0, b=1.0)
 
     def test_infinite_well_evaluation(self):
