@@ -53,7 +53,6 @@ class WaveFunction(ABC):
                 x: spatial coordinates
                 ψ(x): wave function values
         """
-        validate_range(start, end, "interval")
         validate_positive(points, "points")
 
         x = np.linspace(start, end, points)
