@@ -49,7 +49,7 @@ class GaussianWavePacket(WavePacket):
 
         plane_waves = []
         for k, amp in zip(k_values, amplitudes):
-            wavelength = 2 * PI / k if k != 0 else 1e15
+            wavelength = 2 * PI / abs(k) if k != 0 else 1e15
 
             pw = PlaneWave(
                 amplitude=amp,
