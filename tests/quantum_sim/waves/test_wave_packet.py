@@ -8,8 +8,8 @@ import numpy as np
 @pytest.fixture
 def plane_waves():
     return [
-        PlaneWave(amplitude=1.0, wavelength=1.0),
-        PlaneWave(amplitude=1.0, wavelength=2.0),
+        PlaneWave(amplitude=1.0, wave_number=1.0),
+        PlaneWave(amplitude=1.0, wave_number=2.0),
     ]
 
 
