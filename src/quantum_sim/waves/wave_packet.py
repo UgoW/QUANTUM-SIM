@@ -3,7 +3,6 @@ from quantum_sim.waves.plane_wave import PlaneWave
 from quantum_sim.waves.wave_function import WaveFunction
 from quantum_sim.validators.wave_validators import (
     validate_positive,
-    validate_non_negative,
 )
 
 
@@ -56,7 +55,7 @@ class WavePacket(WaveFunction):
             [pw.position for pw in plane_waves], dtype=float
         ).ravel()
 
-        super().__init__(np.array([]), time)
+        super().__init__(None, time)
 
     def validate_parameters(self) -> None:
         """Validate parameters of the plane wave."""
@@ -106,7 +105,6 @@ class WavePacket(WaveFunction):
         X0 = self._positions[np.newaxis, :]
         A = self._amplitudes[np.newaxis, :]
         
-        # Changement: rajout d'un parametre t pour evaluer a un instant t
         time_value = self.time if t is None else t
         
         total_phase = K * (X - X0) - (W * time_value) + P
@@ -134,7 +132,6 @@ class WavePacket(WaveFunction):
         prob_raw = np.abs(psi) ** 2
         norm_val = np.trapezoid(prob_raw, x)
         if norm_val <= 0 or not np.isfinite(norm_val):
-            # TODO : Revoir pour utiliser des exceptions personnalisés
             raise ValueError(f"Invalid norm computed: {norm_val}")
 
         self._norm_factor = 1.0 / np.sqrt(norm_val)

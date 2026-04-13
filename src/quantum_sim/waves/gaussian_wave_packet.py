@@ -5,8 +5,6 @@ from quantum_sim.waves.plane_wave import PlaneWave
 
 
 class GaussianWavePacket(WavePacket):
-    """Gaussian wave packet: superposition of plane waves with gaussian envelope."""
-
     """
     Gaussian wave packet: superposition of plane waves with a gaussian envelope.
     The amplitudes of the underlying plane waves are weighted by a Gaussian distribution

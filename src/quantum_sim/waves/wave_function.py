@@ -7,7 +7,7 @@ from quantum_sim.validators.wave_validators import validate_positive, validate_r
 class WaveFunction(ABC):
     """Abstract base class for quantum wave functions."""
 
-    def __init__(self, position: float, time: float = 0.0):
+    def __init__(self, position: float | None, time: float = 0.0):
         """
         Initialize the wave function.
 
