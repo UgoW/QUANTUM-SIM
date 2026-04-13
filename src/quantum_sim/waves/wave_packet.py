@@ -124,9 +124,9 @@ class WavePacket(WaveFunction):
         """
         return self._norm_factor * self._evaluate_raw(x,t)
         
-    def normalize(self, x: float | np.ndarray) -> None:
+    def normalize(self, start: float, end: float, points: int) -> None:
         """Normalize the wave function."""
-
+        x = np.linspace(start, end, points)
         psi = self._evaluate_raw(x)
         prob_raw = np.abs(psi) ** 2
         norm_val = np.trapezoid(prob_raw, x)
