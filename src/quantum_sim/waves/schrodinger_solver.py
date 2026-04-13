@@ -22,11 +22,11 @@ class SchrodingerSolver:
         gamma_cap: float = 5e-4,
     ) -> None:
         if x_min >= x_max:
-            raise ValueError("error 1")
+            raise ValueError(f"x_min ({x_min}) must be strictly less than x_max ({x_max})")
         if n_points < 3:
-            raise ValueError("error 2")
+            raise ValueError(f"n_points must be >= 3, got {n_points}")
         if mass <= 0:
-            raise ValueError("error 3")
+            raise ValueError(f"mass must be positive, got {mass}")
 
         self.x_min = x_min
         self.x_max = x_max
