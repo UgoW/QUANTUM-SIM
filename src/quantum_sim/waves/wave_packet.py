@@ -118,11 +118,10 @@ class WavePacket(WaveFunction):
         return psi_sum
 
     def evaluate(self, x: float | np.ndarray, t: float | None = None) -> np.ndarray:
-        """Evaluate sum of plane waves with normalisation factor applied
+        """Evaluate sum of plane waves without normalisation factor
         :param x: position(s) to evaluate the wave packet
         :type x: float | np.ndarray
         """
-        self.normalize(x)
         return self._norm_factor * self._evaluate_raw(x,t)
         
     def normalize(self, x: float | np.ndarray) -> None:
