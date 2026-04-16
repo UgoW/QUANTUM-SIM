@@ -7,7 +7,6 @@ from quantum_sim.utils.constants import (
     PI,
 )
 from quantum_sim.validators.wave_validators import (
-    validate_positive,
     validate_non_negative,
 )
 
@@ -22,7 +21,7 @@ class PlaneWave(WaveFunction):
     def __init__(
         self,
         amplitude: complex,
-        wavelength: float,
+        wave_number: float,
         position: float = 0.0,
         phase: float = 0.0,
         time: float = 0.0,
@@ -40,7 +39,7 @@ class PlaneWave(WaveFunction):
             masse: Particle mass
         """
         self.amplitude = amplitude
-        self.wavelength = wavelength
+        self.wave_number = wave_number
         self.phase = phase
         self.masse = masse
 
@@ -48,13 +47,12 @@ class PlaneWave(WaveFunction):
 
     def validate_parameters(self) -> None:
         """Validate parameters of the plane wave."""
-        validate_positive(self.wavelength, "wavelength")
         validate_non_negative(self.masse, "masse")
 
     @property
-    def wave_number(self) -> float:
+    def wavelength(self) -> float:
         """Wave number k = 2π / λ."""
-        return 2 * PI / self.wavelength
+        return self.wave_number / (2 * PI)
 
     @property
     def angular_frequency(self) -> float:

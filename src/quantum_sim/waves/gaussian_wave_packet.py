@@ -5,8 +5,6 @@ from quantum_sim.waves.plane_wave import PlaneWave
 
 
 class GaussianWavePacket(WavePacket):
-    """Gaussian wave packet: superposition of plane waves with gaussian envelope."""
-
     """
     Gaussian wave packet: superposition of plane waves with a gaussian envelope.
     The amplitudes of the underlying plane waves are weighted by a Gaussian distribution
@@ -49,11 +47,10 @@ class GaussianWavePacket(WavePacket):
 
         plane_waves = []
         for k, amp in zip(k_values, amplitudes):
-            wavelength = 2 * PI / abs(k) if k != 0 else 1e15
 
             pw = PlaneWave(
                 amplitude=amp,
-                wavelength=wavelength,
+                wave_number=k,
                 position=position_center,
                 masse=mass,
             )
