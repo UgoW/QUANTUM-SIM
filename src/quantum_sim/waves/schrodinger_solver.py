@@ -91,7 +91,7 @@ class SchrodingerSolver:
         evaluates the packet on the grid and normalizes it.
         """
         # NEED TO BE FIX, WE CAN'T USE PRIVATE FUNCTION HERE
-        psi_raw = packet._evaluate_raw(self.x_grid).astype(complex)
+        psi_raw = packet.evaluate(self.x_grid).astype(complex)
         self.init_from_array(psi_raw, normalize=True)
 
     def init_from_array(self, psi_0: np.ndarray, normalize: bool = True) -> None:
