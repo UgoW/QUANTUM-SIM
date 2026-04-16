@@ -20,11 +20,11 @@ N_POINTS = 1201
 # ── Paquet gaussien incident ────────────────────────────────────────────────
 X0 = -40.0            # centre initial du paquet
 SIGMA_X = 8.0         # largeur spatiale
-K0 = 4.0              # impulsion centrale positive
+K0 = 8.0             # impulsion centrale positive
 
 # ── Potentiel en marche ────────────────────────────────────────────────────
 STEP_POSITION = 0.0
-STEP_HEIGHT = 5e-37
+STEP_HEIGHT = 5.0e-38
 
 # ── Paramètres temporels ───────────────────────────────────────────────────
 T_FINAL = 2.0e5
