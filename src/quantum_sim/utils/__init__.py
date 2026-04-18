@@ -5,3 +5,8 @@ from .constants import (
     ELECTRON_MASS,
     SPEED_OF_LIGHT,
 )
+from .wave_generators import (
+    random_waves,
+    waves_from_tuples,
+    waves_harmonics,
+)
