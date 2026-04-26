@@ -147,7 +147,8 @@ class SchrodingerSolver:
                 f"({(self.x_max - self.x_min) / 2:.3f})"
             )
 
-        t_eval = np.arange(0.0, t_final + dt, dt)
+        n_steps = max(1, int(np.ceil(t_final / dt)))
+        t_eval = np.linspace(0.0, t_final, n_steps + 1)
 
         solution = solve_ivp(
             self._rhs,
